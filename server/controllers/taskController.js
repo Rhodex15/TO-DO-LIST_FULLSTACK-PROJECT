@@ -1,6 +1,6 @@
 import Task from "../models/Task.js";
 
-async function createTask(req, res){
+export async function createTask(req, res){
     try{
         const { title, description } = req.body;
         const newTask = await Task.create({
@@ -16,4 +16,15 @@ async function createTask(req, res){
     }    
 }
 
-export default createTask;
+export async function getTasks(req, res){
+    try{
+        const allTasks = await Task.find();
+        return res.status(200).json(allTasks);
+    }
+    catch(error){
+        console.error("Failed to get all tasks:", error);
+        res.status(500).json("Failed to get all tasks");
+    }
+    
+}
+
