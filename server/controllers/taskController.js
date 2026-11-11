@@ -11,8 +11,8 @@ async function createTask(req, res){
     }
     catch(error){
         console.error("Failed to create task:", error);
-        // res.status(500).json("Failed to create task")
-        next(error);
+        res.status(500).json("Failed to create task")
+        
     }    
 }
 
