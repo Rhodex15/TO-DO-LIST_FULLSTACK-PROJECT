@@ -60,7 +60,7 @@ export async function updateTask(req, res){
         if(Object.prototype.hasOwnProperty.call( req.body, "completed")){
             updateData.completed = completed
         };
-        if(Object.keys(req.body).length === 0){
+        if(Object.keys(updateData).length === 0){
             return res.status(400).json("Please provide data to update");
         }
         const update = await Task.findByIdAndUpdate( taskId, updateData, { new: true, runValidators: true } );
@@ -76,3 +76,19 @@ export async function updateTask(req, res){
     }
 };
 
+export async function deleteTask(req, res){
+    try{
+        const taskID = req.params.id;
+        const deleteTask = await Task.findByIdAndDelete(taskID);
+        if(!deleteTask){
+            console.log("Task not found")
+            return res.status(404).json("Task was not found")
+        };
+        console.log("Task deleted sucessfully")
+        res.status(200).json(deleteTask);
+    }
+    catch(error){
+        console.error("Failed to delete task:", error);
+        res.status(500).json(error)
+    };
+}
