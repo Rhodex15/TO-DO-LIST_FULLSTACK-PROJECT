@@ -7,6 +7,7 @@ export async function createTask(req, res){
             title: title,
             description: description
         });
+        console.log("Created task sucessfully")
         return res.status(201).json(newTask)
     }
     catch(error){
@@ -19,6 +20,7 @@ export async function createTask(req, res){
 export async function getTasks(req, res){
     try{
         const allTasks = await Task.find();
+        console.log("Retrieved all tasks")
         return res.status(200).json(allTasks);
     }
     catch(error){
@@ -35,11 +37,42 @@ export async function getTaskById(req, res){
         if(!retrieveTask){
             return res.status(404).json("Task not found")
         }
+        console.log("Retrieved task sucessfully");
         return res.status(200).json(retrieveTask);
     }
     catch(error){
         console.error("Failed to get task:", error);
         return res.status(500).json("Failed to retrieve task");
+    }
+};
+
+export async function updateTask(req, res){
+    try{
+        const taskId = req.params.id;
+        const { title, description, completed } = req.body;
+        const updateData = {};
+        if(Object.prototype.hasOwnProperty.call( req.body, "title")){
+            updateData.title = title
+        };
+        if(Object.prototype.hasOwnProperty.call( req.body, "description")){
+            updateData.description = description
+        };
+        if(Object.prototype.hasOwnProperty.call( req.body, "completed")){
+            updateData.completed = completed
+        };
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json("Please provide data to update");
+        }
+        const update = await Task.findByIdAndUpdate( taskId, updateData, { new: true, runValidators: true } );
+        if(!update){
+            return res.status(404).json("Task not found");
+        }
+        console.log("Updated task succesfully")
+        return res.status(200).json(update);
+    }
+    catch(error){
+        console.error("Failed to update task:", error);
+        return res.status(500).json("Failed to update task");
     }
 };
 
