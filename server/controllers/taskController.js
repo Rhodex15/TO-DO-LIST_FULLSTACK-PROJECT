@@ -12,8 +12,10 @@ export async function createTask(req, res){
     }
     catch(error){
         console.error("Failed to create task:", error);
-        res.status(500).json("Failed to create task")
-        
+        if(error.name === "ValidationError"){
+            return res.status(400).json("Failed to create task")
+        }
+        return res.status(500).json("Failed to create task")
     }    
 };
 
@@ -42,6 +44,9 @@ export async function getTaskById(req, res){
     }
     catch(error){
         console.error("Failed to get task:", error);
+        if(error.name === "CastError"){
+            return res.status(400).json("Failed to retrieve task");
+        }
         return res.status(500).json("Failed to retrieve task");
     }
 };
