@@ -4,8 +4,8 @@ import { useState, useEffect } from "react";
 function App() {
   const [tasks, setTasks] = useState([]);
   const [title, setTitle] = useState("");
+  const [filter, setFilter] = useState("all");
 
-  // GET: Fetch tasks from backend when app loads
   useEffect(() => {
     const fetchTasks = async () => {
       try {
@@ -60,7 +60,7 @@ function App() {
     }
   };
 
-  // POST: Create a new task
+
   const addTask = async (event) => {
     event.preventDefault();
 
@@ -107,32 +107,95 @@ function App() {
       console.error("Failed to delete task:", error);
     }
   };
+  const filteredTasks = tasks.filter(task => {
+    if (filter === "pending") return !task.completed;
+    if (filter === "completed") return task.completed;
+    return true;
+  });
+
 
   return (
-    <>
-      <h1 className="text-4xl font-bold text-purple-600">To do List App</h1>
+    <div className="min-h-screen bg-[#F8F7FC] px-5 py-10 text-[#27243A]">
+      <div className="mx-auto max-w-2xl">
 
-      <form onSubmit={addTask}>
-        <input
-          value={title}
-          onChange={event => setTitle(event.target.value)}
-          type="text"
-          placeholder="Enter a task..."
-        />
+        <header className="mb-8 flex items-center justify-between">
+          <h1 className="text-2xl font-extrabold tracking-tight">
+            TO DO LIST<span className="text-violet-600">.</span>
+          </h1>
 
-        <button type="submit">Create Task</button>
-      </form>
+          <span className="rounded-full bg-violet-100 px-4 py-2 text-sm font-medium text-violet-700">
+            My workspace
+          </span>
+        </header>
 
-      {tasks.map(task => (
-        <TaskItem
-          key={task._id}
-          title={task.title}
-          completed={task.completed}
-          toggle={() => Toggle(task._id)}
-          onDelete={() => deleteTask(task._id)}
-        />
-      ))}
-    </>
+
+        <section className="mb-8 rounded-3xl bg-gradient-to-br from-violet-600 to-indigo-500 p-8 text-white shadow-lg shadow-violet-100">
+          <p className="mb-2 text-sm font-medium text-violet-100">
+            YOUR PRODUCTIVITY SPACE
+          </p>
+
+          <h2 className="mb-3 text-3xl font-bold tracking-tight">
+            Make today count.
+          </h2>
+
+          <p className="text-sm text-violet-100">
+            Small steps. Big progress.
+          </p>
+        </section>
+
+        <form onSubmit={addTask} className="mb-8 rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+          <label className="mb-3 block font-semibold">
+            Create a task
+          </label>
+
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <input
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+              type="text"
+              placeholder="What needs to get done?"
+              className="min-w-0 flex-1 rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-100"
+            />
+
+            <button
+              type="submit"
+              className="rounded-xl bg-violet-600 px-5 py-3 font-semibold text-white transition hover:bg-violet-700 active:scale-[0.98]"
+            >
+              + Add task
+            </button>
+          </div>
+        </form>
+
+        <div className="mb-5 flex gap-2">
+          {["all", "pending", "completed"].map(option => (
+            <button
+              key={option}
+              onClick={() => setFilter(option)}
+              className={`rounded-xl px-4 py-2 text-sm font-medium capitalize transition ${filter === option
+                  ? "bg-violet-600 text-white shadow-sm"
+                  : "bg-white text-gray-500 hover:bg-violet-50"
+                }`}
+            >
+              {option}
+            </button>
+          ))}
+        </div>
+
+        {/* Task List */}
+        <div className="space-y-3">
+          {filteredTasks.map(task => (
+            <TaskItem
+              key={task._id}
+              title={task.title}
+              completed={task.completed}
+              toggle={() => Toggle(task._id)}
+              onDelete={() => deleteTask(task._id)}
+            />
+          ))}
+        </div>
+
+      </div>
+    </div>
   );
 }
 
