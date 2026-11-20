@@ -1,6 +1,6 @@
 # 📝 TODO LIST APP — Task Management App
 
-A modern, responsive task management application built with React, Tailwind CSS, Node.js, Express, and MongoDB. Proxify allows users to create, track, update, and delete tasks through a clean, intuitive interface connected to a RESTful API and a MongoDB database.
+A modern, responsive task management application built with React, Tailwind CSS, Node.js, Express, and MongoDB. It allows users to create, track, update, and delete tasks through a clean, intuitive interface connected to a RESTful API and a MongoDB database.
 
 ---
 
@@ -32,7 +32,7 @@ A modern, responsive task management application built with React, Tailwind CSS,
 
 ## 🛠️ Process & Development Story
 
-I built Proxify to strengthen my understanding of full-stack development by taking a project from frontend implementation to backend integration and database persistence.
+I built this app to strengthen my understanding of full-stack development by taking a project from frontend implementation to backend integration and database persistence.
 
 I started by building the user interface with React, breaking the application into reusable components and managing the application state using React hooks. I implemented task creation, completion toggling, deletion, and filtering, focusing on how React handles state changes and dynamically renders the UI.
 
